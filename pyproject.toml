@@ -1,0 +1,17 @@
+[project]
+name = "mytravelagent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "dotenv>=0.9.9",
+    "langchain>=1.2.13",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.24",
+    "langchain-openai>=1.1.12",
+    "pika>=1.3.2",
+    "redis>=7.4.0",
+]
