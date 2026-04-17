@@ -17,9 +17,9 @@ load_dotenv()
 def _load_agent_executor():
     mode = os.getenv("AGENT_MODE", "react").strip().lower()
     if mode == "react":
-        from Agent.lc_react import agent_executor as executor
+        from lc_agent.lc_react import agent_executor as executor
     elif mode == "functioncall":
-        from Agent.lc_functioncall import agent_executor as executor
+        from lc_agent.lc_functioncall import agent_executor as executor
     else:
         raise RuntimeError(
             "Invalid AGENT_MODE. Expected 'react' or 'functioncall', "

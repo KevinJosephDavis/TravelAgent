@@ -150,7 +150,7 @@ memory = ConversationBufferMemory(
     # ReAct 文本模板需要字符串历史，不能塞 Message 对象
     # True 的话一般配合MessagesPlaceholder使用，普通字符串配合{chat_history}占位符使用
     return_messages=False,
-    # output_key 告诉 Memory 从 Agent 的输出中提取哪个字段作为助手的回答存入记忆
+    # output_key 告诉 Memory 从 lc_agent 的输出中提取哪个字段作为助手的回答存入记忆
     output_key="output",
 )
 
