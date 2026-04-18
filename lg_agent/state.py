@@ -4,6 +4,7 @@ from langgraph.graph import MessagesState
 
 
 # Optional表示字段可以为空，Optional[str] 等价于 Union[str,None]
+# 需要注意：字段可以为空，但是必须得有这个 key
 
 class UserPreferences(TypedDict):
 
@@ -22,7 +23,7 @@ class TripState(MessagesState):
     user_preferences: UserPreferences
 
     # 业务中间结果
-    intent_type: Optional[str]  # 意图分类结果
+    intent_result: Optional[str]  # 意图分类结果
     route_planning: Optional[Dict]  # 生成的行程
     query_results: Optional[Dict]  # 天气/景点等查询结果
     booking_info: Optional[Dict]  # 预订信息
