@@ -23,6 +23,9 @@ def get_city_traffic_event(city_name: str):
     :param city_name: 提取出的城市名，如北京
     :return: 结构化交通信息
     """
+
+    print("正在查询交通事件...")
+
     # 1. 城市名转adcode
     adcode = CITY_ADCODE_MAP.get(city_name)
     if not adcode:

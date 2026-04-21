@@ -17,7 +17,7 @@ def test_graph():
     print("开始运行 LangGraph 旅游助手...")
     result = travel_agent.invoke(inputs, config=config)
     print("✅ 运行成功！")
-    print("最终状态：", result)
+    print(result)
 
 if __name__ == "__main__":
     test_graph()

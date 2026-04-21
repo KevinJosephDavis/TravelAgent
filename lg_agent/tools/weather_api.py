@@ -10,6 +10,8 @@ def get_weather_tool(city: str, date: Optional[str] = None) -> str:
     :param date: 日期（当前仅支持实时，若提供则返回提示）
     :return: 天气描述字符串
     """
+    print("正在查询天气信息...")
+
     if not city:
         return "错误：未提供城市名称"
 
