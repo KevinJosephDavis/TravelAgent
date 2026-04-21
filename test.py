@@ -7,7 +7,7 @@ def test_graph():
     config = {"configurable": {"thread_id": memory_id}}
 
     inputs = {
-        "user_input": "北京天气怎么样",
+        "user_input": "番禺区的天气与交通情况怎么样",
         "user_preferences": {},
         "interrupt_needed": True,
         "is_complete": True,

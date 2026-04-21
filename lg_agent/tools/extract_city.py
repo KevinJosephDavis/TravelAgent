@@ -17,4 +17,4 @@ def extract_city(user_input: str) -> str:
     # response = llm.invoke(prompt)
     # city = response.content.strip()
 
-    return "北京"
+    return "番禺区"
