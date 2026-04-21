@@ -16,7 +16,17 @@ def info_fetcher(state: TripState):
     city = extract_city(user_input)
 
     # TODO : 这里由于wttr只能查询实时天气，所以先不传date，后续添加extract_date工具后再完善
+
+    # 统计查询用时
+    import time
+
+    start_time = time.time() * 1000
+
     weather_info = get_weather_tool(city)
+
+    end_time = time.time() * 1000
+    
+    print(f"天气查询用时：{end_time - start_time:.2f}毫秒")
 
     # traffic_info = get_city_traffic_event(city)
 
@@ -29,9 +39,15 @@ def info_fetcher(state: TripState):
 
     traffic_info_brief = "交通状况：道路畅通，无重大事故或施工。"
 
+    # 统计查询用时
+    start_time = time.time() * 1000
+    
     attraction_info = get_attraction_recommendation(city, weather_info, traffic_info_brief)
 
-    return {
+    end_time = time.time() * 1000
+    print(f"景点推荐用时：{end_time - start_time:.2f}毫秒")
+
+    return { 
         "query_results": {
             "weather": weather_info,
             "traffic": traffic_info_brief,

@@ -4,6 +4,7 @@ import hashlib
 import os
 from dotenv import load_dotenv
 from lg_agent.constants.city_code import CITY_ADCODE_MAP
+from lg_agent.utils.redis_client import redis_client, CACHE_EXPIRE_SECONDS
 
 
 load_dotenv()
@@ -30,30 +31,44 @@ def get_city_traffic_event(city_name: str):
     adcode = CITY_ADCODE_MAP.get(city_name)
     if not adcode:
         return {"error": f"暂不支持该城市：{city_name}"}
-    
-    # 2. 生成秒级时间戳
-    timestamp = str(int(time.time()))
-    
-    # 3. 生成高德动态鉴权digest
-    digest = generate_digest(AMAP_WEB_API_KEY, timestamp)
-    
-    # 4. 组装请求参数（全部必填项）
-    params = {
-        "adcode": adcode,
-        "clientKey": AMAP_WEB_API_KEY,
-        "timestamp": timestamp,
-        "digest": digest,
-        "eventType": "1;2;3",  # 1事故 2施工 3管制，分号分隔查全部
-        "isExpressway": 0     # 0=市区全部道路，1=仅高速
-    }
+
+    # 构建缓存 Key
+    cache_key = f"traffic:{city_name}"
 
     try:
+        # 先查缓存
+        cache_traffic_data = redis_client.get(cache_key)
+        if cache_traffic_data:
+            print(f"缓存命中，直接返回{city_name}的交通信息")
+            return cache_traffic_data
+
+        # 2. 生成秒级时间戳
+        timestamp = str(int(time.time()))
+        # 3. 生成高德动态鉴权digest
+        digest = generate_digest(AMAP_WEB_API_KEY, timestamp)
+        # 4. 组装请求参数（全部必填项）
+        params = {
+            "adcode": adcode,
+            "clientKey": AMAP_WEB_API_KEY,
+            "timestamp": timestamp,
+            "digest": digest,
+            "eventType": "1;2;3",  # 1事故 2施工 3管制，分号分隔查全部
+            "isExpressway": 0     # 0=市区全部道路，1=仅高速
+        }
+
+        # 模拟查询用时
+        time.sleep(2)
+
         resp = requests.get(AMAP_WEB_API_URL, params=params, timeout=10)
         resp.raise_for_status()
         result = resp.json()
-        return parse_traffic_result(result)
+        parsed_result = parse_traffic_result(result)
+
+        # 缓存结果，转为字符串存储
+        redis_client.setex(cache_key, CACHE_EXPIRE_SECONDS, str(parsed_result))
+        return parsed_result
     except Exception as e:
-        return {"error": f"交通接口请求失败：{str(e)}"}
+        return f"交通接口请求失败：{str(e)}"
 
 def parse_traffic_result(raw_data):
     """解析高德返回的原始JSON，整理成前端友好的简洁格式"""

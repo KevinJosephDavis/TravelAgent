@@ -15,20 +15,29 @@ def get_attraction_recommendation(city: str, weather: str, traffic: str) -> str:
 
     print("正在查询景点推荐...")
 
+    # 构建缓存 Key
+    cache_key = f"spot_recommendation:{city}"
+
     try:
+        # 先查缓存
+        from lg_agent.utils.redis_client import redis_client, CACHE_EXPIRE_SECONDS
+        cache_spot_data = redis_client.get(cache_key)
+        if cache_spot_data:
+            print(f"缓存命中，直接返回{city}的景点推荐")
+            return cache_spot_data
+
         query = f"{city} {weather} {traffic} 适合去的景点推荐，用中文返回结果"
 
         resp = tavily_client.search(
             query=query, 
             include_answer="basic",
             search_depth="advanced"
-          )
-        
+        )
         answer = resp.get("answer", "未找到相关景点推荐")
+        result = "推荐景点：" + str(answer).strip()
 
-        return {
-            "推荐景点": str(answer).strip()
-        }
-    
+        # 缓存结果，转为字符串存储
+        redis_client.setex(cache_key, CACHE_EXPIRE_SECONDS, str(result))
+        return result
     except Exception as e:
         return f"景点推荐失败：{str(e)}"

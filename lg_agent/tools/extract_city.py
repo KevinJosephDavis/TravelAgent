@@ -11,7 +11,6 @@ def extract_city(user_input: str) -> str:
     """
 
     prompt = EXTRACT_CITY_PROMPT.format(user_input=user_input)
-    print(prompt)
     # TODO : 这里先直接返回固定值，后续接入 llm 来真正抽取
     # llm = init_llm()
     # response = llm.invoke(prompt)
