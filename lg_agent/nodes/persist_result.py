@@ -12,9 +12,11 @@ def persist_result(state: TripState):
     time.sleep(3)
 
     # 后面用数据库工具函数持久化，这里先模拟结果
+    # TODO: 这里要判断用户究竟是plan_trip还是query_info
     print("持久化完成，保存的结果如下：")
     print({
         "intent_result": state["intent_result"],
-        "query_results": state["query_results"],
+        # "query_results": state["query_results"],
+        "route_planning": state["route_planning"],
         "user_feedback": state["user_feedback"]
     })

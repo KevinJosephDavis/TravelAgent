@@ -12,7 +12,7 @@ def intent_router(state: TripState):
     import time
     time.sleep(3)  # 模拟处理时间
 
-    # 后面用LLM判断意图
+    # TODO: 后续用LLM判断意图
     return {
-        "intent_result": "query_info"  # 先默认查询信息
+        "intent_result": "plan_trip"  
     }
