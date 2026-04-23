@@ -50,7 +50,7 @@ def get_city_coordinates(city_name: str) -> Optional[str]:
             location = data["geocodes"][0].get("location")
             if location:
                 # 缓存坐标（城市坐标相对稳定，缓存较长时间）
-                redis_client.setex(cache_key, CACHE_EXPIRE_SECONDS * 24, location)
+                redis_client.setex(cache_key, CACHE_EXPIRE_SECONDS * 2400, location)
                 return location
 
         print(f"未找到城市 {city_name} 的坐标")
@@ -118,7 +118,7 @@ def get_route(origin: str, destination: str, travel_mode: str = "driving") -> di
             # 缓存结果
             redis_client.setex(cache_key, CACHE_EXPIRE_SECONDS, json.dumps(result, ensure_ascii=False))
 
-        return result
+        return result 
 
     except Exception as e:
         return {"error": f"路径规划失败：{str(e)}"}

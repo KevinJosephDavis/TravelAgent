@@ -21,6 +21,7 @@ def route_planning(state: TripState) -> dict:
         }
 
     # 提取起点、终点和出行方式
+    # TODO : 如果用户是要去某地，要先拿到用户所在的位置，作为起点
     route_info = extract_city_route(user_input)
     origin = route_info.get("origin", "")
     destination = route_info.get("destination", "")
